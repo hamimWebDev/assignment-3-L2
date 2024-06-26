@@ -4,6 +4,7 @@ import { auth } from "../Middlewares/Auth";
 
 const router = express.Router();
 
-router.post("/facility", auth("admin"), facultyControllers.createFaculty);
+router.post("/", auth("admin"), facultyControllers.createFaculty);
+router.put("/:id", auth("admin"), facultyControllers.updateAFacultyIntoDB);
 
 export const FacultyRoutes = router;

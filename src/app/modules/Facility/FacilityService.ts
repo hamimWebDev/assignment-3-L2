@@ -7,6 +7,15 @@ const postFacultyFromDb = async (facultyData: TFaculty) => {
   return result;
 };
 
+const updateAFacultyIntoDB = async (id: string, payload: Partial<TFaculty>) => {
+  const result = await Faculty.findOneAndUpdate({ _id: id }, payload, {
+    new: true,
+    runValidators: true,
+  });
+  return result;
+};
+
 export const facultyServices = {
   postFacultyFromDb,
+  updateAFacultyIntoDB,
 };

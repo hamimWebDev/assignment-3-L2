@@ -15,7 +15,7 @@ const moduleRoutes = [
     route: LoginRoutes,
   },
   {
-    path: "/auth",
+    path: "/facility",
     route: FacultyRoutes,
   },
 ];

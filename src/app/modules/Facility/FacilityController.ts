@@ -19,6 +19,20 @@ const createFaculty = catchAsync(async (req, res) => {
   });
 });
 
+const updateAFacultyIntoDB = catchAsync(async (req, res) => {
+  const { id } = req.params;
+
+  const result = await facultyServices.updateAFacultyIntoDB(id, req.body);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Faculty is updated successfully",
+    data: result,
+  });
+});
+
 export const facultyControllers = {
   createFaculty,
+  updateAFacultyIntoDB,
 };
