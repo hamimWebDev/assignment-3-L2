@@ -39,7 +39,7 @@ const deleteFacultyFromDB = async (id: string) => {
 };
 
 const getAllFacultyFromDd = async () => {
-  const result = await Faculty.find();
+  const result = await Faculty.find({ isDeleted: false });
   return result;
 };
 
@@ -47,5 +47,5 @@ export const facultyServices = {
   postFacultyFromDb,
   updateAFacultyIntoDB,
   deleteFacultyFromDB,
-  getAllFacultyFromDd
+  getAllFacultyFromDd,
 };
