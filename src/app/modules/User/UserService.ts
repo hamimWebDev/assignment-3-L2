@@ -22,6 +22,12 @@ const postUserFromDb = async (userData: TUser) => {
   return rest;
 };
 
+const getAllUsers = async () => {
+  const result = await User.find();
+  return result;
+};
+
 export const userServices = {
   postUserFromDb,
+  getAllUsers,
 };

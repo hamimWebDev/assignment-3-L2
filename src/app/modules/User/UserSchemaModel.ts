@@ -7,6 +7,7 @@ interface IUser extends TUser, Document {}
 
 interface IUserModel extends Model<IUser> {
   isUserExistByCustomEmail(email: string): Promise<IUser | null>;
+  isUserExistByCustomId(id: string): Promise<IUser | null>;
   isPasswordMashed(password: string, hashPassword: string): Promise<boolean>;
   isJwtIssuedAfterPasswordChanged(
     passwordChangeTimeTamp: Date,
@@ -50,6 +51,10 @@ const userSchema = new Schema<IUser>(
 
 userSchema.statics.isUserExistByCustomEmail = async function (email: string) {
   return await this.findOne({ email: email });
+};
+
+userSchema.statics.isUserExistByCustomId = async function (id: string) {
+  return await User.findOne({ id }).select("+password");
 };
 
 userSchema.statics.isPasswordMashed = async function (

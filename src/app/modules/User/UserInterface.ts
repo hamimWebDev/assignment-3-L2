@@ -1,9 +1,11 @@
+export type TUserRole = "admin" | "user";
+
 interface TUser {
   name: string;
   email: string;
   password: string;
   phone: string;
-  role: "admin" | "user";
+  role: TUserRole;
   address: string;
 }
 
