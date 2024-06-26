@@ -45,8 +45,20 @@ const deleteFacultyFromDB = catchAsync(async (req, res) => {
   });
 });
 
+const getAllFacultyFromDd = catchAsync(async (req, res) => {
+  const result = await facultyServices.getAllFacultyFromDd();
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Facilities retrieved successfully",
+    data: result,
+  });
+});
+
 export const facultyControllers = {
   createFaculty,
   updateAFacultyIntoDB,
   deleteFacultyFromDB,
+  getAllFacultyFromDd,
 };

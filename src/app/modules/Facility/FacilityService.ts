@@ -38,8 +38,14 @@ const deleteFacultyFromDB = async (id: string) => {
   return deletedFaculty;
 };
 
+const getAllFacultyFromDd = async () => {
+  const result = await Faculty.find();
+  return result;
+};
+
 export const facultyServices = {
   postFacultyFromDb,
   updateAFacultyIntoDB,
   deleteFacultyFromDB,
+  getAllFacultyFromDd
 };
