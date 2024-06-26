@@ -1,12 +1,9 @@
 import { z } from "zod";
 
 const loginValidationSchema = z.object({
-  body: z.object({
-    id: z.string({ required_error: "id is required" }),
-    password: z.string({ required_error: "password is required" }),
-  }),
+  email: z.string().email(),
+  password: z.string().min(7), // You can adjust the minimum length as needed
 });
-
-export const AuthValidation = {
+export const LoginValidation = {
   loginValidationSchema,
 };

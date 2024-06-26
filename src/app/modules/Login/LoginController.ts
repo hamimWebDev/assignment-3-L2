@@ -2,9 +2,11 @@ import httpStatus from "http-status";
 import { catchAsync } from "../Utils/CatchAsync";
 import { LoginServices } from "./LoginService";
 import { sendResponse } from "../Utils/SendResponse";
+import { LoginValidation } from "./LoginValidation";
 
 const loginUser = catchAsync(async (req, res) => {
-  const result = await LoginServices.loginUser(req.body);
+  const zodData = LoginValidation.loginValidationSchema.parse(req.body);
+  const result = await LoginServices.loginUser(zodData);
   const { accessToken, user } = result;
 
   sendResponse(res, {
