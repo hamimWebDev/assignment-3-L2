@@ -1,6 +1,20 @@
-import mongoose, { Schema } from "mongoose";
+/* eslint-disable no-unused-vars */
+import { Document, Model, Schema, model } from "mongoose";
+import bcrypt from "bcrypt";
+import TUser from "./UserInterface";
 
-const userSchema = new Schema(
+interface IUser extends TUser, Document {}
+
+interface IUserModel extends Model<IUser> {
+  isUserExistByCustomEmail(email: string): Promise<IUser | null>;
+  isPasswordMashed(password: string, hashPassword: string): Promise<boolean>;
+  isJwtIssuedAfterPasswordChanged(
+    passwordChangeTimeTamp: Date,
+    jwtIssuedTime: number,
+  ): boolean;
+}
+
+const userSchema = new Schema<IUser>(
   {
     name: {
       type: String,
@@ -14,7 +28,6 @@ const userSchema = new Schema(
     password: {
       type: String,
       required: true,
-      select: 0,
     },
     phone: {
       type: String,
@@ -35,6 +48,15 @@ const userSchema = new Schema(
   },
 );
 
-const User = mongoose.model("User", userSchema);
+userSchema.statics.isUserExistByCustomEmail = async function (email: string) {
+  return await this.findOne({ email: email });
+};
 
-export default User;
+userSchema.statics.isPasswordMashed = async function (
+  password: string,
+  hashPassword: string,
+) {
+  return await bcrypt.compare(password, hashPassword);
+};
+
+export const User = model<IUser, IUserModel>("User", userSchema);
