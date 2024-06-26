@@ -1,3 +1,5 @@
+import httpStatus from "http-status";
+import { AppError } from "../Errors/AppErrors";
 import { TFaculty } from "./FacilityInterface";
 import { Faculty } from "./FacilityModel";
 
@@ -15,7 +17,29 @@ const updateAFacultyIntoDB = async (id: string, payload: Partial<TFaculty>) => {
   return result;
 };
 
+const deleteFacultyFromDB = async (id: string) => {
+  const requestFaculty = await Faculty.findOne({ _id: id });
+  if (requestFaculty?.isDeleted === true) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      "Failed this faculty is already deleted",
+    );
+  }
+  const deletedFaculty = await Faculty.findOneAndUpdate(
+    { _id: id },
+    { isDeleted: true },
+    { new: true, runValidators: true },
+  );
+
+  if (!deletedFaculty) {
+    throw new AppError(httpStatus.BAD_REQUEST, "Failed to delete faculty");
+  }
+
+  return deletedFaculty;
+};
+
 export const facultyServices = {
   postFacultyFromDb,
   updateAFacultyIntoDB,
+  deleteFacultyFromDB,
 };

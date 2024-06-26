@@ -6,5 +6,6 @@ const router = express.Router();
 
 router.post("/", auth("admin"), facultyControllers.createFaculty);
 router.put("/:id", auth("admin"), facultyControllers.updateAFacultyIntoDB);
+router.delete("/:id", auth("admin"), facultyControllers.deleteFacultyFromDB);
 
 export const FacultyRoutes = router;
