@@ -23,6 +23,10 @@ const moduleRoutes = [
     path: "/bookings",
     route: facultyBookingRoutes,
   },
+  {
+    path: "/check-availability",
+    route: facultyBookingRoutes,
+  },
 ];
 
 moduleRoutes.forEach((route) => router.use(route.path, route.route));

@@ -12,6 +12,12 @@ const postBookingFacultyFromDb = async (
   return result;
 };
 
+const getAllBooking = async () => {
+  const result = await FacultyBooking.find();
+  return result;
+};
+
 export const facultyBookingServices = {
   postBookingFacultyFromDb,
+  getAllBooking,
 };

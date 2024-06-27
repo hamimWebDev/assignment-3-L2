@@ -10,4 +10,6 @@ router.post(
   facultyBookingControllers.postBookingFacultyFromDb,
 );
 
+router.get("/", auth("admin"), facultyBookingControllers.getAllBooking);
+
 export const facultyBookingRoutes = router;
