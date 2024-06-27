@@ -43,7 +43,7 @@ const postBookingFacultyFromDb = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "User registered successfully",
+    message: "Booking created successfully",
     data: result,
   });
 });
@@ -128,7 +128,7 @@ const getAllBooking = catchAsync(async (req, res) => {
     res.json({
       success: true,
       statusCode: 200,
-      message: "Available slots retrieved successfully",
+      message: "Availability checked successfully",
       data: availableSlots,
     });
   } else {
@@ -136,7 +136,7 @@ const getAllBooking = catchAsync(async (req, res) => {
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: "get all User successfully",
+      message: "Bookings retrieved successfully",
       data: result,
     });
   }
@@ -173,7 +173,20 @@ const getUserBooking = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Facilities retrieved successfully",
+    message: "Bookings retrieved successfully",
+    data: result,
+  });
+});
+
+const cancelBookingFromDB = catchAsync(async (req, res) => {
+  const { id } = req.params;
+
+  const result = await facultyBookingServices.cancelBookingFromDB(id);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Booking cancelled successfully",
     data: result,
   });
 });
@@ -182,4 +195,5 @@ export const facultyBookingControllers = {
   postBookingFacultyFromDb,
   getAllBooking,
   getUserBooking,
+  cancelBookingFromDB,
 };

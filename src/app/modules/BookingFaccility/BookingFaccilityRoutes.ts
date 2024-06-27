@@ -11,6 +11,11 @@ router.post(
 );
 
 router.get("/", auth("admin"), facultyBookingControllers.getAllBooking);
-router.get("/user", facultyBookingControllers.getUserBooking);
+router.get("/user", auth("user"), facultyBookingControllers.getUserBooking);
+router.delete(
+  "/:id",
+  auth("user"),
+  facultyBookingControllers.cancelBookingFromDB,
+);
 
 export const facultyBookingRoutes = router;
