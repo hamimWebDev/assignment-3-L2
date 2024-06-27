@@ -5,13 +5,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.app = void 0;
 const express_1 = __importDefault(require("express"));
-const product_route_1 = require("./app/modules/products/product.route");
-const orders_route_1 = require("./app/modules/Orders/orders.route");
+const routes_1 = require("./routes");
+const globalErrorHandler_1 = require("./app/modules/middlewares/globalErrorHandler");
+const notFound_1 = require("./app/modules/middlewares/notFound");
+const cookie_parser_1 = __importDefault(require("cookie-parser"));
 exports.app = (0, express_1.default)();
 //parsers
 exports.app.use(express_1.default.json());
-exports.app.use("/api/products", product_route_1.productsRoute);
-exports.app.use("/api/orders", orders_route_1.ordersRoute);
+exports.app.use((0, cookie_parser_1.default)());
+// application routes
+exports.app.use("/api", routes_1.router);
 exports.app.get("/", (req, res) => {
     res.send("Hello Examiner!");
 });
+// global ErrorHandler
+exports.app.use(globalErrorHandler_1.globalErrorHandler);
+// not fount
+exports.app.use(notFound_1.notFount);
