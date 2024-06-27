@@ -1,7 +1,7 @@
 import { Types } from "mongoose";
 import { TFacilityBooking } from "./BookingFaccilityInterface";
 import { FacultyBooking } from "./BookingFaccilityModel";
-import { AppError } from "../Errors/AppErrors";
+import { AppError } from "../errors/AppErrors";
 import httpStatus from "http-status";
 
 const postBookingFacultyFromDb = async (

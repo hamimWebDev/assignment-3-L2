@@ -1,6 +1,6 @@
 import express from "express";
 import { facultyBookingControllers } from "./BookingFaccilityController";
-import { auth } from "../Middlewares/Auth";
+import { auth } from "../middlewares/auth";
 
 const router = express.Router();
 

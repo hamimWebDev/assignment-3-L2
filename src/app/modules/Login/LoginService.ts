@@ -1,6 +1,6 @@
 import httpStatus from "http-status";
 import { TLoginUser } from "./LoginInterface";
-import { AppError } from "../Errors/AppErrors";
+import { AppError } from "../errors/AppErrors";
 import jwt from "jsonwebtoken";
 import config from "../../config";
 

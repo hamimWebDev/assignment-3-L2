@@ -1,5 +1,5 @@
 import httpStatus from "http-status";
-import { AppError } from "../Errors/AppErrors";
+import { AppError } from "../errors/AppErrors";
 import { TFaculty } from "./FacilityInterface";
 import { Faculty } from "./FacilityModel";
 
