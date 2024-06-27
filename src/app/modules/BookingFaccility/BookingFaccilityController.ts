@@ -142,7 +142,44 @@ const getAllBooking = catchAsync(async (req, res) => {
   }
 });
 
+const getUserBooking = catchAsync(async (req, res) => {
+  const token = req.headers.authorization;
+
+  if (!token) {
+    return sendResponse(res, {
+      statusCode: httpStatus.UNAUTHORIZED,
+      success: false,
+      message: "No token provided",
+      data: {},
+    });
+  }
+
+  if (!config.jwt_secret) {
+    return sendResponse(res, {
+      statusCode: httpStatus.INTERNAL_SERVER_ERROR,
+      success: false,
+      message: "JWT secret is not defined",
+      data: {},
+    });
+  }
+
+  const decoded = jwt.verify(token, config.jwt_secret) as JwtPayload;
+  req.user = decoded;
+
+  // Example usage of 'userId'
+  const { userId } = decoded;
+  const result = await facultyBookingServices.getUserBooking(userId);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Facilities retrieved successfully",
+    data: result,
+  });
+});
+
 export const facultyBookingControllers = {
   postBookingFacultyFromDb,
   getAllBooking,
+  getUserBooking,
 };

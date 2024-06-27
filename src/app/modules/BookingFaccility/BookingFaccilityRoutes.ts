@@ -11,5 +11,6 @@ router.post(
 );
 
 router.get("/", auth("admin"), facultyBookingControllers.getAllBooking);
+router.get("/user", facultyBookingControllers.getUserBooking);
 
 export const facultyBookingRoutes = router;

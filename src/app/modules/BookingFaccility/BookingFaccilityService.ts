@@ -13,11 +13,21 @@ const postBookingFacultyFromDb = async (
 };
 
 const getAllBooking = async () => {
-  const result = await FacultyBooking.find();
+  const result = await FacultyBooking.find()
+    .populate("facility")
+    .populate("user");
+  return result;
+};
+
+const getUserBooking = async (userId: Types.ObjectId) => {
+  const result = await FacultyBooking.find({ user: userId })
+    .populate("facility")
+    .populate("user");
   return result;
 };
 
 export const facultyBookingServices = {
   postBookingFacultyFromDb,
   getAllBooking,
+  getUserBooking,
 };

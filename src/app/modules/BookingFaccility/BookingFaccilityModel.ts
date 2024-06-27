@@ -5,8 +5,7 @@ const bookingFacilitySchema = new Schema<TFacilityBooking>({
   facility: {
     type: Schema.Types.ObjectId,
     required: [true, "facility id is required"],
-    unique: true,
-    ref: "Facility",
+    ref: "Faculty",
   },
   date: { type: String, required: true },
   startTime: { type: String, required: true },
