@@ -16,8 +16,12 @@ app.use("/api", router);
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello Examiner!");
 });
+
 // global ErrorHandler
 app.use(globalErrorHandler);
 
 // not fount
 app.use(notFount);
+
+
+// hi

@@ -29,13 +29,6 @@ const getUserBooking = async (userId: Types.ObjectId) => {
 };
 
 const cancelBookingFromDB = async (id: string) => {
-  // const requestFaculty = await Faculty.findOne({ _id: id });
-  // if (requestFaculty?.isDeleted === true) {
-  //   throw new AppError(
-  //     httpStatus.BAD_REQUEST,
-  //     "Failed this faculty is already deleted",
-  //   );
-  // }
   const cancelBooking = await FacultyBooking.findOneAndUpdate(
     { _id: id },
     { isBooked: "canceled" },
@@ -43,7 +36,7 @@ const cancelBookingFromDB = async (id: string) => {
   );
 
   if (!cancelBooking) {
-    throw new AppError(httpStatus.BAD_REQUEST, "Failed to delete faculty");
+    throw new AppError(httpStatus.BAD_REQUEST, "Failed cancel booking");
   }
 
   return cancelBooking;
