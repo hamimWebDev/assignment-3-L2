@@ -8,7 +8,17 @@ import { User } from "../User/UserSchemaModel";
 
 export const auth = (...requiredRoles: TUserRole[]) => {
   return catchAsync(async (req, res, next) => {
-    const token = req.headers.authorization;
+    // Extract the bearer token from the Authorization header
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      throw new AppError(
+        httpStatus.UNAUTHORIZED,
+        "Invalid authorization header. Bearer token expected.",
+      );
+    }
+
+    const token = authHeader.split("Bearer ")[1];
+
     if (!token) {
       throw new AppError(
         httpStatus.UNAUTHORIZED,
@@ -16,24 +26,28 @@ export const auth = (...requiredRoles: TUserRole[]) => {
       );
     }
 
-    const decoded = jwt.verify(
-      token,
-      config.jwt_secret as string,
-    ) as JwtPayload;
-    req.user = decoded;
+    try {
+      const decoded = jwt.verify(
+        token,
+        config.jwt_secret as string,
+      ) as JwtPayload;
+      req.user = decoded;
 
-    // Example usage of 'role'
-    const { role, _id } = decoded;
+      // Example usage of 'role'
+      const { role, _id } = decoded;
 
-    const user = await User?.isUserExistByCustomId(_id);
-    if (!user) {
-      throw new AppError(httpStatus.NOT_FOUND, "user is fot found");
-    }
+      const user = await User?.isUserExistByCustomId(_id);
+      if (!user) {
+        throw new AppError(httpStatus.NOT_FOUND, "User not found");
+      }
 
-    if (requiredRoles && !requiredRoles.includes(role)) {
-      throw new AppError(httpStatus.UNAUTHORIZED, "You are not authorized!");
-    } else {
-      next();
+      if (requiredRoles && !requiredRoles.includes(role as TUserRole)) {
+        throw new AppError(httpStatus.UNAUTHORIZED, "You are not authorized!");
+      } else {
+        next();
+      }
+    } catch (error) {
+      throw new AppError(httpStatus.UNAUTHORIZED, "Invalid token");
     }
   });
 };
