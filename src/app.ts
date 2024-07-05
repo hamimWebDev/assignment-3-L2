@@ -22,6 +22,3 @@ app.use(globalErrorHandler);
 
 // not fount
 app.use(notFount);
-
-
-// hi
