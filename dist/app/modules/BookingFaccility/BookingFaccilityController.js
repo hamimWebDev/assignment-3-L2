@@ -19,9 +19,17 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const SendResponse_1 = require("../Utils/SendResponse");
 const BookingFaccilityService_1 = require("./BookingFaccilityService");
 const config_1 = __importDefault(require("../../config"));
-const BookingFaccilityModel_1 = require("./BookingFaccilityModel");
 const postBookingFacultyFromDb = (0, CatchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const token = req.headers.authorization;
+    const tokenBearer = req.headers.authorization;
+    if (!tokenBearer) {
+        return (0, SendResponse_1.sendResponse)(res, {
+            statusCode: http_status_1.default.UNAUTHORIZED,
+            success: false,
+            message: "Bearer token provided please",
+            data: {},
+        });
+    }
+    const token = tokenBearer.split("Bearer ")[1];
     if (!token) {
         return (0, SendResponse_1.sendResponse)(res, {
             statusCode: http_status_1.default.UNAUTHORIZED,
@@ -53,80 +61,25 @@ const postBookingFacultyFromDb = (0, CatchAsync_1.catchAsync)((req, res) => __aw
 }));
 // getAllBooking
 const getAllBooking = (0, CatchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const dateString = req.query.date;
-    if (dateString) {
-        // Custom availability time ranges
-        const customAvailability = [
-            { startTime: "10:00", endTime: "11:00" },
-            { startTime: "13:00", endTime: "14:00" },
-            // Add more custom time ranges as needed
-        ];
-        // Function to convert string time to Date object
-        function parseTime(timeString) {
-            const [hours, minutes] = timeString
-                .split(":")
-                .map((part) => parseInt(part, 10));
-            const date = new Date();
-            date.setHours(hours, minutes, 0, 0);
-            return date;
-        }
-        // Retrieve bookings for the specified custom time ranges
-        const bookings = yield BookingFaccilityModel_1.FacultyBooking.find({
-            $or: customAvailability.map((slot) => ({
-                startTime: parseTime(slot.startTime),
-                endTime: parseTime(slot.endTime),
-            })),
-        });
-        // Convert bookings to time slots
-        const bookedSlots = bookings.map((booking) => ({
-            startTime: parseTime(booking.startTime),
-            endTime: parseTime(booking.endTime),
-        }));
-        // Function to generate available time slots based on custom ranges
-        function generateAvailableSlots() {
-            const availableSlots = [];
-            // Iterate over each custom availability range
-            customAvailability.forEach((slot) => {
-                let currentSlotStart = parseTime(slot.startTime).getHours();
-                const endHour = parseTime(slot.endTime).getHours();
-                while (currentSlotStart < endHour) {
-                    const currentSlotEnd = currentSlotStart + 1; // Assuming each slot is 1 hour long
-                    const slotTime = `${currentSlotStart.toString().padStart(2, "0")}:00`;
-                    const isBooked = bookedSlots.some((bookedSlot) => currentSlotStart >= bookedSlot.startTime.getHours() &&
-                        currentSlotStart < bookedSlot.endTime.getHours());
-                    if (!isBooked) {
-                        availableSlots.push({
-                            startTime: slotTime,
-                            endTime: `${currentSlotEnd.toString().padStart(2, "0")}:00`,
-                        });
-                    }
-                    currentSlotStart++; // Move to the next hour
-                }
-            });
-            return availableSlots;
-        }
-        const availableSlots = generateAvailableSlots();
-        // hi
-        // Prepare and send the response
-        res.json({
-            success: true,
-            statusCode: 200,
-            message: "Availability checked successfully",
-            data: availableSlots,
-        });
-    }
-    else {
-        const result = yield BookingFaccilityService_1.facultyBookingServices.getAllBooking();
-        (0, SendResponse_1.sendResponse)(res, {
-            statusCode: http_status_1.default.OK,
-            success: true,
-            message: "Bookings retrieved successfully",
-            data: result,
-        });
-    }
+    const result = yield BookingFaccilityService_1.facultyBookingServices.getAllBooking();
+    (0, SendResponse_1.sendResponse)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: "Bookings retrieved successfully",
+        data: result,
+    });
 }));
 const getUserBooking = (0, CatchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const token = req.headers.authorization;
+    const tokenBearer = req.headers.authorization;
+    if (!tokenBearer) {
+        return (0, SendResponse_1.sendResponse)(res, {
+            statusCode: http_status_1.default.UNAUTHORIZED,
+            success: false,
+            message: "Bearer token provided please",
+            data: {},
+        });
+    }
+    const token = tokenBearer.split("Bearer ")[1];
     if (!token) {
         return (0, SendResponse_1.sendResponse)(res, {
             statusCode: http_status_1.default.UNAUTHORIZED,

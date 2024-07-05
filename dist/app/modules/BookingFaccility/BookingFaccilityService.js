@@ -23,28 +23,24 @@ const postBookingFacultyFromDb = (bookingData, userId) => __awaiter(void 0, void
     return result;
 });
 const getAllBooking = () => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield BookingFaccilityModel_1.FacultyBooking.find()
+    const result = yield BookingFaccilityModel_1.FacultyBooking.find({ isBooked: "confirmed" })
         .populate("facility")
         .populate("user");
     return result;
 });
 const getUserBooking = (userId) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield BookingFaccilityModel_1.FacultyBooking.find({ user: userId })
+    const result = yield BookingFaccilityModel_1.FacultyBooking.find({
+        user: userId,
+        isBooked: "confirmed",
+    })
         .populate("facility")
         .populate("user");
     return result;
 });
 const cancelBookingFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    // const requestFaculty = await Faculty.findOne({ _id: id });
-    // if (requestFaculty?.isDeleted === true) {
-    //   throw new AppError(
-    //     httpStatus.BAD_REQUEST,
-    //     "Failed this faculty is already deleted",
-    //   );
-    // }
     const cancelBooking = yield BookingFaccilityModel_1.FacultyBooking.findOneAndUpdate({ _id: id }, { isBooked: "canceled" }, { new: true, runValidators: true });
     if (!cancelBooking) {
-        throw new AppErrors_1.AppError(http_status_1.default.BAD_REQUEST, "Failed to delete faculty");
+        throw new AppErrors_1.AppError(http_status_1.default.BAD_REQUEST, "Failed cancel booking");
     }
     return cancelBooking;
 });

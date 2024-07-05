@@ -22,7 +22,7 @@ const postFacultyFromDb = (facultyData) => __awaiter(void 0, void 0, void 0, fun
     return result;
 });
 const updateAFacultyIntoDB = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield FacilityModel_1.Faculty.findOneAndUpdate({ _id: id }, payload, {
+    const result = yield FacilityModel_1.Faculty.findOneAndUpdate({ _id: id, isDeleted: false }, payload, {
         new: true,
         runValidators: true,
     });
