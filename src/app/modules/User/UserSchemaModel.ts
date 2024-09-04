@@ -43,6 +43,14 @@ const userSchema = new Schema<IUser>(
       type: String,
       required: true,
     },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
+    profileImage: {
+      type: String,
+      default: "",
+    },
   },
   {
     timestamps: true,

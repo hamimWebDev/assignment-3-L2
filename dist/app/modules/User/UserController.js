@@ -30,6 +30,26 @@ const createUser = (0, CatchAsync_1.catchAsync)((req, res) => __awaiter(void 0, 
         data: rest,
     });
 }));
+const updateAUserIntoDB = (0, CatchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    const result = yield UserService_1.userServices.updateAUserIntoDB(id, req.body);
+    (0, SendResponse_1.sendResponse)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: "Faculty is updated successfully",
+        data: result,
+    });
+}));
+const deleteUserFromDB = (0, CatchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    const result = yield UserService_1.userServices.deleteUserFromDB(id);
+    (0, SendResponse_1.sendResponse)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: "User is deleted successfully",
+        data: result,
+    });
+}));
 const getAllUsers = (0, CatchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield UserService_1.userServices.getAllUsers();
     (0, SendResponse_1.sendResponse)(res, {
@@ -41,5 +61,7 @@ const getAllUsers = (0, CatchAsync_1.catchAsync)((req, res) => __awaiter(void 0,
 }));
 exports.userControllers = {
     createUser,
+    updateAUserIntoDB,
+    deleteUserFromDB,
     getAllUsers,
 };

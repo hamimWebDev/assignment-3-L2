@@ -26,5 +26,9 @@ const facultySchema = new mongoose_1.default.Schema({
         type: Boolean,
         default: false,
     },
+    image: {
+        type: String,
+        default: "",
+    },
 });
 exports.Faculty = mongoose_1.default.model("Faculty", facultySchema);

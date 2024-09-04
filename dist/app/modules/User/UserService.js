@@ -31,32 +31,56 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const UserSchemaModel_1 = require("./UserSchemaModel");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const postUserFromDb = (userData) => __awaiter(void 0, void 0, void 0, function* () {
-    // Create the user in the database
-    const result = yield UserSchemaModel_1.User.create(userData);
-    const isUserExist = yield (UserSchemaModel_1.User === null || UserSchemaModel_1.User === void 0 ? void 0 : UserSchemaModel_1.User.isUserExistByCustomEmail(userData === null || userData === void 0 ? void 0 : userData.email));
-    if (!isUserExist) {
-        throw new AppErrors_1.AppError(http_status_1.default.NOT_FOUND, "user is fot found");
+    // Check if the user already exists by email
+    const isUserExist = yield UserSchemaModel_1.User.isUserExistByCustomEmail(userData.email);
+    if (isUserExist) {
+        throw new AppErrors_1.AppError(http_status_1.default.CONFLICT, "User already exists");
     }
-    const jwtPayload = {
-        userId: isUserExist === null || isUserExist === void 0 ? void 0 : isUserExist.id,
-        role: isUserExist === null || isUserExist === void 0 ? void 0 : isUserExist.role,
-    };
-    const accessToken = jsonwebtoken_1.default.sign(jwtPayload, config_1.default.jwt_secret, {
-        expiresIn: "10d",
-    });
     // Hash the user's password
     const hashedPassword = yield bcrypt_1.default.hash(userData.password, Number(config_1.default.bcrypt_salt_routs));
     // Update the userData with the hashed password
     userData.password = hashedPassword;
+    // Create the user in the database
+    const result = yield UserSchemaModel_1.User.create(userData);
+    // Generate JWT Payload
+    const jwtPayload = {
+        userId: result.id,
+        role: result.role,
+    };
+    // Create JWT Token
+    const accessToken = jsonwebtoken_1.default.sign(jwtPayload, config_1.default.jwt_secret, {
+        expiresIn: "10d",
+    });
+    // Exclude password, createdAt, and updatedAt from the response
     const _a = result.toObject(), { password, createdAt, updatedAt } = _a, rest = __rest(_a, ["password", "createdAt", "updatedAt"]);
-    // Return the user data without the password, createdAt, updatedAt
+    // Return the user data without sensitive information
     return { accessToken, rest };
 });
+const deleteUserFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const requestUser = yield UserSchemaModel_1.User.findOne({ _id: id });
+    if ((requestUser === null || requestUser === void 0 ? void 0 : requestUser.isDeleted) === true) {
+        throw new AppErrors_1.AppError(http_status_1.default.BAD_REQUEST, "Failed this User is already deleted");
+    }
+    const deletedUser = yield UserSchemaModel_1.User.findOneAndUpdate({ _id: id }, { isDeleted: true }, { new: true, runValidators: true });
+    if (!deletedUser) {
+        throw new AppErrors_1.AppError(http_status_1.default.BAD_REQUEST, "Failed to delete User");
+    }
+    return deletedUser;
+});
+const updateAUserIntoDB = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield UserSchemaModel_1.User.findOneAndUpdate({ _id: id, isDeleted: false }, payload, {
+        new: true,
+        runValidators: true,
+    });
+    return result;
+});
 const getAllUsers = () => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield UserSchemaModel_1.User.find();
+    const result = yield UserSchemaModel_1.User.find({ isDeleted: false });
     return result;
 });
 exports.userServices = {
     postUserFromDb,
+    updateAUserIntoDB,
+    deleteUserFromDB,
     getAllUsers,
 };

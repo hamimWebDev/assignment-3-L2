@@ -43,6 +43,14 @@ const userSchema = new mongoose_1.Schema({
         type: String,
         required: true,
     },
+    isDeleted: {
+        type: Boolean,
+        default: false,
+    },
+    profileImage: {
+        type: String,
+        default: "",
+    },
 }, {
     timestamps: true,
 });

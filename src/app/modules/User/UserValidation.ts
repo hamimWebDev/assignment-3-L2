@@ -11,6 +11,8 @@ const userValidationSchema = z.object({
   phone: z.string().nonempty({ message: "Phone number is required" }),
   role: z.enum(["admin", "user"]).default("user"),
   address: z.string().nonempty({ message: "Address is required" }),
+  isDeleted: z.boolean().optional().default(false),
+  profileImage: z.string().optional(),
 });
 
 export const userValidation = {

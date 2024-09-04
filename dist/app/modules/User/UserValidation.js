@@ -13,6 +13,8 @@ const userValidationSchema = zod_1.z.object({
     phone: zod_1.z.string().nonempty({ message: "Phone number is required" }),
     role: zod_1.z.enum(["admin", "user"]).default("user"),
     address: zod_1.z.string().nonempty({ message: "Address is required" }),
+    isDeleted: zod_1.z.boolean().optional().default(false),
+    profileImage: zod_1.z.string().optional(),
 });
 exports.userValidation = {
     userValidationSchema,

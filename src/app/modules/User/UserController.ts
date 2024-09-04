@@ -20,6 +20,32 @@ const createUser = catchAsync(async (req, res) => {
   });
 });
 
+const updateAUserIntoDB = catchAsync(async (req, res) => {
+  const { id } = req.params;
+
+  const result = await userServices.updateAUserIntoDB(id, req.body);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Faculty is updated successfully",
+    data: result,
+  });
+});
+
+const deleteUserFromDB = catchAsync(async (req, res) => {
+  const { id } = req.params;
+
+  const result = await userServices.deleteUserFromDB(id);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "User is deleted successfully",
+    data: result,
+  });
+});
+
 const getAllUsers = catchAsync(async (req, res) => {
   const result = await userServices.getAllUsers();
   sendResponse(res, {
@@ -32,5 +58,7 @@ const getAllUsers = catchAsync(async (req, res) => {
 
 export const userControllers = {
   createUser,
+  updateAUserIntoDB,
+  deleteUserFromDB,
   getAllUsers,
 };

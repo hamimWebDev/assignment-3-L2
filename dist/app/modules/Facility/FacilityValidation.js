@@ -10,6 +10,7 @@ const facultyValidationSchema = zod_1.z.object({
         .positive({ message: "Price per hour must be a positive number" }),
     location: zod_1.z.string().nonempty({ message: "Location is required" }),
     isDeleted: zod_1.z.boolean().optional().default(false),
+    image: zod_1.z.string().optional(),
 });
 exports.FacultyValidation = {
     facultyValidationSchema,
