@@ -21,12 +21,13 @@ const UserValidation_1 = require("./UserValidation");
 const createUser = (0, CatchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const userData = req.body;
     const zodData = UserValidation_1.userValidation.userValidationSchema.parse(userData);
-    const result = yield UserService_1.userServices.postUserFromDb(zodData);
+    const { accessToken, rest } = yield UserService_1.userServices.postUserFromDb(zodData);
     (0, SendResponse_1.sendResponse)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
         message: "User registered successfully",
-        data: result,
+        token: accessToken,
+        data: rest,
     });
 }));
 const getAllUsers = (0, CatchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {

@@ -9,13 +9,14 @@ const createUser = catchAsync(async (req, res) => {
 
   const zodData = userValidation.userValidationSchema.parse(userData);
 
-  const result = await userServices.postUserFromDb(zodData);
+  const { accessToken, rest } = await userServices.postUserFromDb(zodData);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: "User registered successfully",
-    data: result,
+    token: accessToken,
+    data: rest,
   });
 });
 

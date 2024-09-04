@@ -24,19 +24,33 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.userServices = void 0;
+const http_status_1 = __importDefault(require("http-status"));
 const config_1 = __importDefault(require("../../config"));
+const AppErrors_1 = require("../errors/AppErrors");
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const UserSchemaModel_1 = require("./UserSchemaModel");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const postUserFromDb = (userData) => __awaiter(void 0, void 0, void 0, function* () {
+    // Create the user in the database
+    const result = yield UserSchemaModel_1.User.create(userData);
+    const isUserExist = yield (UserSchemaModel_1.User === null || UserSchemaModel_1.User === void 0 ? void 0 : UserSchemaModel_1.User.isUserExistByCustomEmail(userData === null || userData === void 0 ? void 0 : userData.email));
+    if (!isUserExist) {
+        throw new AppErrors_1.AppError(http_status_1.default.NOT_FOUND, "user is fot found");
+    }
+    const jwtPayload = {
+        userId: isUserExist === null || isUserExist === void 0 ? void 0 : isUserExist.id,
+        role: isUserExist === null || isUserExist === void 0 ? void 0 : isUserExist.role,
+    };
+    const accessToken = jsonwebtoken_1.default.sign(jwtPayload, config_1.default.jwt_secret, {
+        expiresIn: "10d",
+    });
     // Hash the user's password
     const hashedPassword = yield bcrypt_1.default.hash(userData.password, Number(config_1.default.bcrypt_salt_routs));
     // Update the userData with the hashed password
     userData.password = hashedPassword;
-    // Create the user in the database
-    const result = yield UserSchemaModel_1.User.create(userData);
     const _a = result.toObject(), { password, createdAt, updatedAt } = _a, rest = __rest(_a, ["password", "createdAt", "updatedAt"]);
     // Return the user data without the password, createdAt, updatedAt
-    return rest;
+    return { accessToken, rest };
 });
 const getAllUsers = () => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield UserSchemaModel_1.User.find();
