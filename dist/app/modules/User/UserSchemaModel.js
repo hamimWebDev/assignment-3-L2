@@ -59,9 +59,9 @@ userSchema.statics.isUserExistByCustomEmail = function (email) {
         return yield this.findOne({ email: email });
     });
 };
-userSchema.statics.isUserExistByCustomId = function (id) {
+userSchema.statics.isUserExistByCustomId = function (_id) {
     return __awaiter(this, void 0, void 0, function* () {
-        return yield exports.User.findOne({ id }).select("+password");
+        return yield exports.User.findOne({ _id });
     });
 };
 userSchema.statics.isPasswordMashed = function (password, hashPassword) {

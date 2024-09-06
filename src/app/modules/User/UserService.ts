@@ -19,28 +19,26 @@ const postUserFromDb = async (userData: TUser) => {
     Number(config.bcrypt_salt_routs),
   );
 
-  // Update the userData with the hashed password
   userData.password = hashedPassword;
 
-  // Create the user in the database
   const result = await User.create(userData);
 
-  // Generate JWT Payload
   const jwtPayload = {
     userId: result.id,
     role: result.role,
   };
 
-  // Create JWT Token
   const accessToken = jwt.sign(jwtPayload, config.jwt_secret as string, {
     expiresIn: "10d",
   });
 
-  // Exclude password, createdAt, and updatedAt from the response
+  const refreshToken = jwt.sign(jwtPayload, config.jwt_secret as string, {
+    expiresIn: "365d",
+  });
+
   const { password, createdAt, updatedAt, ...rest } = result.toObject();
 
-  // Return the user data without sensitive information
-  return { accessToken, rest };
+  return { accessToken, refreshToken, rest };
 };
 
 const deleteUserFromDB = async (id: string) => {

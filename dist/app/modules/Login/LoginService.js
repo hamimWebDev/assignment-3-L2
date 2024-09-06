@@ -34,13 +34,43 @@ const loginUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const accessToken = jsonwebtoken_1.default.sign(jwtPayload, config_1.default.jwt_secret, {
         expiresIn: "10d",
     });
+    const refreshToken = jsonwebtoken_1.default.sign(jwtPayload, config_1.default.jwt_secret, {
+        expiresIn: "365d",
+    });
     const { _id, name, email, role, phone, address } = isUserExist;
     const user = { _id, name, email, role, phone, address };
     return {
         accessToken,
+        refreshToken,
         user,
+    };
+});
+const refreshToken = (token) => __awaiter(void 0, void 0, void 0, function* () {
+    // checking if the given token is valid
+    const decoded = jsonwebtoken_1.default.verify(token, config_1.default.jwt_secret);
+    const { userId } = decoded;
+    // checking if the user is exist
+    const user = yield UserSchemaModel_1.User.isUserExistByCustomId(userId);
+    if (!user) {
+        throw new AppErrors_1.AppError(http_status_1.default.NOT_FOUND, "This user is not found !");
+    }
+    // checking if the user is already deleted
+    const isDeleted = user === null || user === void 0 ? void 0 : user.isDeleted;
+    if (isDeleted) {
+        throw new AppErrors_1.AppError(http_status_1.default.FORBIDDEN, "This user is deleted !");
+    }
+    const jwtPayload = {
+        userId: user.id,
+        role: user.role,
+    };
+    const accessToken = jsonwebtoken_1.default.sign(jwtPayload, config_1.default.jwt_secret, {
+        expiresIn: "10d",
+    });
+    return {
+        accessToken,
     };
 });
 exports.LoginServices = {
     loginUser,
+    refreshToken,
 };

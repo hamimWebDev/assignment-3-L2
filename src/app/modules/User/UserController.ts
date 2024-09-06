@@ -3,14 +3,20 @@ import { catchAsync } from "../Utils/CatchAsync";
 import { sendResponse } from "../Utils/SendResponse";
 import { userServices } from "./UserService";
 import { userValidation } from "./UserValidation";
+import config from "../../config";
 
 const createUser = catchAsync(async (req, res) => {
   const userData = req.body;
 
   const zodData = userValidation.userValidationSchema.parse(userData);
 
-  const { accessToken, rest } = await userServices.postUserFromDb(zodData);
+  const { accessToken, refreshToken, rest } =
+    await userServices.postUserFromDb(zodData);
 
+  res.cookie("refreshToken", refreshToken, {
+    secure: config.NODE_ENV === "production",
+    httpOnly: true,
+  });
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,

@@ -38,23 +38,20 @@ const postUserFromDb = (userData) => __awaiter(void 0, void 0, void 0, function*
     }
     // Hash the user's password
     const hashedPassword = yield bcrypt_1.default.hash(userData.password, Number(config_1.default.bcrypt_salt_routs));
-    // Update the userData with the hashed password
     userData.password = hashedPassword;
-    // Create the user in the database
     const result = yield UserSchemaModel_1.User.create(userData);
-    // Generate JWT Payload
     const jwtPayload = {
         userId: result.id,
         role: result.role,
     };
-    // Create JWT Token
     const accessToken = jsonwebtoken_1.default.sign(jwtPayload, config_1.default.jwt_secret, {
         expiresIn: "10d",
     });
-    // Exclude password, createdAt, and updatedAt from the response
+    const refreshToken = jsonwebtoken_1.default.sign(jwtPayload, config_1.default.jwt_secret, {
+        expiresIn: "365d",
+    });
     const _a = result.toObject(), { password, createdAt, updatedAt } = _a, rest = __rest(_a, ["password", "createdAt", "updatedAt"]);
-    // Return the user data without sensitive information
-    return { accessToken, rest };
+    return { accessToken, refreshToken, rest };
 });
 const deleteUserFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const requestUser = yield UserSchemaModel_1.User.findOne({ _id: id });

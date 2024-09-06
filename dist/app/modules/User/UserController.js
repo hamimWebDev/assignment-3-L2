@@ -18,10 +18,15 @@ const CatchAsync_1 = require("../Utils/CatchAsync");
 const SendResponse_1 = require("../Utils/SendResponse");
 const UserService_1 = require("./UserService");
 const UserValidation_1 = require("./UserValidation");
+const config_1 = __importDefault(require("../../config"));
 const createUser = (0, CatchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const userData = req.body;
     const zodData = UserValidation_1.userValidation.userValidationSchema.parse(userData);
-    const { accessToken, rest } = yield UserService_1.userServices.postUserFromDb(zodData);
+    const { accessToken, refreshToken, rest } = yield UserService_1.userServices.postUserFromDb(zodData);
+    res.cookie("refreshToken", refreshToken, {
+        secure: config_1.default.NODE_ENV === "production",
+        httpOnly: true,
+    });
     (0, SendResponse_1.sendResponse)(res, {
         statusCode: http_status_1.default.OK,
         success: true,

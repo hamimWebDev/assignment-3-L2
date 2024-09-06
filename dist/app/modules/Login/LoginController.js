@@ -18,10 +18,15 @@ const CatchAsync_1 = require("../Utils/CatchAsync");
 const LoginService_1 = require("./LoginService");
 const SendResponse_1 = require("../Utils/SendResponse");
 const LoginValidation_1 = require("./LoginValidation");
+const config_1 = __importDefault(require("../../config"));
 const loginUser = (0, CatchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const zodData = LoginValidation_1.LoginValidation.loginValidationSchema.parse(req.body);
     const result = yield LoginService_1.LoginServices.loginUser(zodData);
-    const { accessToken, user } = result;
+    const { accessToken, refreshToken, user } = result;
+    res.cookie("refreshToken", refreshToken, {
+        secure: config_1.default.NODE_ENV === "production",
+        httpOnly: true,
+    });
     (0, SendResponse_1.sendResponse)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
@@ -30,6 +35,17 @@ const loginUser = (0, CatchAsync_1.catchAsync)((req, res) => __awaiter(void 0, v
         data: user,
     });
 }));
+const refreshToken = (0, CatchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { refreshToken } = req.cookies;
+    const result = yield LoginService_1.LoginServices.refreshToken(refreshToken);
+    (0, SendResponse_1.sendResponse)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: "Access token is retrieved succesfully!",
+        data: result,
+    });
+}));
 exports.LoginControllers = {
     loginUser,
+    refreshToken,
 };

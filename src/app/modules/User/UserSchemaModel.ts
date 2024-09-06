@@ -61,8 +61,8 @@ userSchema.statics.isUserExistByCustomEmail = async function (email: string) {
   return await this.findOne({ email: email });
 };
 
-userSchema.statics.isUserExistByCustomId = async function (id: string) {
-  return await User.findOne({ id }).select("+password");
+userSchema.statics.isUserExistByCustomId = async function (_id: string) {
+  return await User.findOne({ _id });
 };
 
 userSchema.statics.isPasswordMashed = async function (

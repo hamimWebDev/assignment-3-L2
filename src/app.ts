@@ -3,12 +3,14 @@ import { router } from "./routes";
 import { globalErrorHandler } from "./app/modules/middlewares/globalErrorHandler";
 import { notFount } from "./app/modules/middlewares/notFound";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 
 export const app = express();
 
 //parsers
 app.use(express.json());
 app.use(cookieParser());
+app.use(cors({ origin: ["http://localhost:5173", "http://localhost:5174"] }));
 
 // application routes
 app.use("/api", router);
