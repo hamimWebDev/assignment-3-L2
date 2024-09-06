@@ -14,7 +14,10 @@ exports.app = (0, express_1.default)();
 //parsers
 exports.app.use(express_1.default.json());
 exports.app.use((0, cookie_parser_1.default)());
-exports.app.use((0, cors_1.default)({ origin: ["http://localhost:5173", "http://localhost:5174"] }));
+exports.app.use((0, cors_1.default)({
+    origin: ["http://localhost:5173", "http://localhost:5174"],
+    credentials: true,
+}));
 // application routes
 exports.app.use("/api", routes_1.router);
 exports.app.get("/", (req, res) => {
