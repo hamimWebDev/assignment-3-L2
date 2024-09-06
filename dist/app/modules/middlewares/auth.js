@@ -34,8 +34,8 @@ const auth = (...requiredRoles) => {
             const decoded = jsonwebtoken_1.default.verify(token, config_1.default.jwt_secret);
             req.user = decoded;
             // Example usage of 'role'
-            const { role, _id } = decoded;
-            const user = yield (UserSchemaModel_1.User === null || UserSchemaModel_1.User === void 0 ? void 0 : UserSchemaModel_1.User.isUserExistByCustomId(_id));
+            const { role, userId } = decoded;
+            const user = yield (UserSchemaModel_1.User === null || UserSchemaModel_1.User === void 0 ? void 0 : UserSchemaModel_1.User.isUserExistByCustomId(userId));
             if (!user) {
                 throw new AppErrors_1.AppError(http_status_1.default.NOT_FOUND, "User not found");
             }

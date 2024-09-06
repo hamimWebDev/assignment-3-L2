@@ -34,9 +34,8 @@ export const auth = (...requiredRoles: TUserRole[]) => {
       req.user = decoded;
 
       // Example usage of 'role'
-      const { role, _id } = decoded;
-
-      const user = await User?.isUserExistByCustomId(_id);
+      const { role, userId } = decoded;
+      const user = await User?.isUserExistByCustomId(userId);
       if (!user) {
         throw new AppError(httpStatus.NOT_FOUND, "User not found");
       }

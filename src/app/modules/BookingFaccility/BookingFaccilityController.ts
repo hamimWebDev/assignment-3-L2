@@ -77,6 +77,7 @@ const getUserBooking = catchAsync(async (req, res) => {
     });
   }
   const token = tokenBearer.split("Bearer ")[1];
+  
 
   if (!token) {
     return sendResponse(res, {
