@@ -12,7 +12,7 @@ const createUser = catchAsync(async (req, res) => {
 
   const { accessToken, refreshToken, rest } =
     await userServices.postUserFromDb(zodData);
-
+  // add this
   res.cookie("refreshToken", refreshToken, {
     secure: config.NODE_ENV === "production",
     httpOnly: true,

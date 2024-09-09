@@ -23,6 +23,7 @@ const createUser = (0, CatchAsync_1.catchAsync)((req, res) => __awaiter(void 0, 
     const userData = req.body;
     const zodData = UserValidation_1.userValidation.userValidationSchema.parse(userData);
     const { accessToken, refreshToken, rest } = yield UserService_1.userServices.postUserFromDb(zodData);
+    // add this
     res.cookie("refreshToken", refreshToken, {
         secure: config_1.default.NODE_ENV === "production",
         httpOnly: true,
