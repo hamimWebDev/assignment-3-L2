@@ -8,5 +8,6 @@ router.post("/signup", userControllers.createUser);
 router.put("/user/:id", userControllers.updateAUserIntoDB);
 router.delete("/user/:id", auth("admin"), userControllers.deleteUserFromDB);
 router.get("/users", auth("admin"), userControllers.getAllUsers);
+router.get("/user/:id", userControllers.getAUsers);
 
 export const userRoutes = router;

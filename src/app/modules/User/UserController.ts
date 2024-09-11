@@ -62,9 +62,21 @@ const getAllUsers = catchAsync(async (req, res) => {
   });
 });
 
+const getAUsers = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const result = await userServices.getAUsers(id);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "get all User successfully",
+    data: result,
+  });
+});
+
 export const userControllers = {
   createUser,
   updateAUserIntoDB,
   deleteUserFromDB,
   getAllUsers,
+  getAUsers,
 };

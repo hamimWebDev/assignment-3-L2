@@ -79,9 +79,15 @@ const getAllUsers = async () => {
   return result;
 };
 
+const getAUsers = async (id: string) => {
+  const result = await User.findOne({ _id: id, isDeleted: false });
+  return result;
+};
+
 export const userServices = {
   postUserFromDb,
   updateAUserIntoDB,
   deleteUserFromDB,
   getAllUsers,
+  getAUsers,
 };
