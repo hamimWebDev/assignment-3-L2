@@ -75,9 +75,14 @@ const getAllUsers = () => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield UserSchemaModel_1.User.find({ isDeleted: false });
     return result;
 });
+const getAUsers = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield UserSchemaModel_1.User.findOne({ _id: id, isDeleted: false });
+    return result;
+});
 exports.userServices = {
     postUserFromDb,
     updateAUserIntoDB,
     deleteUserFromDB,
     getAllUsers,
+    getAUsers,
 };

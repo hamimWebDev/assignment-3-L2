@@ -12,4 +12,5 @@ router.post("/signup", UserController_1.userControllers.createUser);
 router.put("/user/:id", UserController_1.userControllers.updateAUserIntoDB);
 router.delete("/user/:id", (0, auth_1.auth)("admin"), UserController_1.userControllers.deleteUserFromDB);
 router.get("/users", (0, auth_1.auth)("admin"), UserController_1.userControllers.getAllUsers);
+router.get("/user/:id", UserController_1.userControllers.getAUsers);
 exports.userRoutes = router;
