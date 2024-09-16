@@ -9,8 +9,13 @@ import { User } from "../User/UserSchemaModel";
 const loginUser = async (payload: TLoginUser) => {
   const isUserExist = await User?.isUserExistByCustomEmail(payload?.email);
   if (!isUserExist) {
-    throw new AppError(httpStatus.NOT_FOUND, "user is fot found");
+    throw new AppError(httpStatus.NOT_FOUND, "user is not found");
   }
+
+  if (isUserExist?.isDeleted === true) {
+    throw new AppError(httpStatus.NOT_FOUND, "user is not found");
+  }
+  
 
   const isPasswordMashed = await User.isPasswordMashed(
     payload.password,
@@ -53,7 +58,7 @@ const refreshToken = async (token: string) => {
 
   // checking if the user is exist
   const user = await User.isUserExistByCustomId(userId);
-  
+
   if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, "This user is not found !");
   }

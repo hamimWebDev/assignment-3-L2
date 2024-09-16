@@ -21,7 +21,10 @@ const UserSchemaModel_1 = require("../User/UserSchemaModel");
 const loginUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const isUserExist = yield (UserSchemaModel_1.User === null || UserSchemaModel_1.User === void 0 ? void 0 : UserSchemaModel_1.User.isUserExistByCustomEmail(payload === null || payload === void 0 ? void 0 : payload.email));
     if (!isUserExist) {
-        throw new AppErrors_1.AppError(http_status_1.default.NOT_FOUND, "user is fot found");
+        throw new AppErrors_1.AppError(http_status_1.default.NOT_FOUND, "user is not found");
+    }
+    if ((isUserExist === null || isUserExist === void 0 ? void 0 : isUserExist.isDeleted) === true) {
+        throw new AppErrors_1.AppError(http_status_1.default.NOT_FOUND, "user is not found");
     }
     const isPasswordMashed = yield UserSchemaModel_1.User.isPasswordMashed(payload.password, isUserExist === null || isUserExist === void 0 ? void 0 : isUserExist.password);
     if (isPasswordMashed === false) {
