@@ -43,9 +43,14 @@ const getAllFacultyFromDd = () => __awaiter(void 0, void 0, void 0, function* ()
     const result = yield FacilityModel_1.Faculty.find({ isDeleted: false });
     return result;
 });
+const getAFacultyFromDd = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield FacilityModel_1.Faculty.findOne({ _id: id, isDeleted: false });
+    return result;
+});
 exports.facultyServices = {
     postFacultyFromDb,
     updateAFacultyIntoDB,
     deleteFacultyFromDB,
     getAllFacultyFromDd,
+    getAFacultyFromDd,
 };

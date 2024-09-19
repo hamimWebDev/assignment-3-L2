@@ -58,9 +58,20 @@ const getAllFacultyFromDd = (0, CatchAsync_1.catchAsync)((req, res) => __awaiter
         data: result,
     });
 }));
+const getAFacultyFromDd = (0, CatchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    const result = yield FacilityService_1.facultyServices.getAFacultyFromDd(id);
+    (0, SendResponse_1.sendResponse)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: "get all User successfully",
+        data: result,
+    });
+}));
 exports.facultyControllers = {
     createFaculty,
     updateAFacultyIntoDB,
     deleteFacultyFromDB,
     getAllFacultyFromDd,
+    getAFacultyFromDd,
 };

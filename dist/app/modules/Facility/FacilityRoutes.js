@@ -12,4 +12,5 @@ router.post("/", (0, auth_1.auth)("admin"), FacilityController_1.facultyControll
 router.put("/:id", (0, auth_1.auth)("admin"), FacilityController_1.facultyControllers.updateAFacultyIntoDB);
 router.delete("/:id", (0, auth_1.auth)("admin"), FacilityController_1.facultyControllers.deleteFacultyFromDB);
 router.get("/", FacilityController_1.facultyControllers.getAllFacultyFromDd);
+router.get("/:id", FacilityController_1.facultyControllers.getAFacultyFromDd);
 exports.FacultyRoutes = router;

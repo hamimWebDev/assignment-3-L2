@@ -46,10 +46,15 @@ const getAllFacultyFromDd = async () => {
   const result = await Faculty.find({ isDeleted: false });
   return result;
 };
+const getAFacultyFromDd = async (id: string) => {
+  const result = await Faculty.findOne({ _id: id, isDeleted: false });
+  return result;
+};
 
 export const facultyServices = {
   postFacultyFromDb,
   updateAFacultyIntoDB,
   deleteFacultyFromDB,
   getAllFacultyFromDd,
+  getAFacultyFromDd,
 };

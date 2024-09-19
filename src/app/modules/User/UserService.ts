@@ -36,6 +36,7 @@ const postUserFromDb = async (userData: TUser) => {
     expiresIn: "365d",
   });
 
+  
   const { password, createdAt, updatedAt, ...rest } = result.toObject();
 
   return { accessToken, refreshToken, rest };
