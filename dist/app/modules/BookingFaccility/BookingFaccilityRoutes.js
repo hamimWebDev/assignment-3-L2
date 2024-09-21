@@ -10,6 +10,7 @@ const auth_1 = require("../middlewares/auth");
 const router = express_1.default.Router();
 router.post("/", (0, auth_1.auth)("user"), BookingFaccilityController_1.facultyBookingControllers.postBookingFacultyFromDb);
 router.get("/", (0, auth_1.auth)("admin"), BookingFaccilityController_1.facultyBookingControllers.getAllBooking);
+router.put("/:id", (0, auth_1.auth)("user"), BookingFaccilityController_1.facultyBookingControllers.updateABookingIntoDB);
 router.get("/user", (0, auth_1.auth)("user"), BookingFaccilityController_1.facultyBookingControllers.getUserBooking);
 router.delete("/:id", (0, auth_1.auth)("user"), BookingFaccilityController_1.facultyBookingControllers.cancelBookingFromDB);
 exports.facultyBookingRoutes = router;

@@ -11,6 +11,11 @@ router.post(
 );
 
 router.get("/", auth("admin"), facultyBookingControllers.getAllBooking);
+router.put(
+  "/:id",
+  auth("user"),
+  facultyBookingControllers.updateABookingIntoDB,
+);
 router.get("/user", auth("user"), facultyBookingControllers.getUserBooking);
 router.delete(
   "/:id",

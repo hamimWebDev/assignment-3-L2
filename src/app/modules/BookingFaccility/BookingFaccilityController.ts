@@ -55,6 +55,22 @@ const postBookingFacultyFromDb = catchAsync(async (req, res) => {
   });
 });
 
+const updateABookingIntoDB = catchAsync(async (req, res) => {
+  const { id } = req.params;
+
+  const result = await facultyBookingServices.updateABookingIntoDB(
+    id,
+    req.body,
+  );
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Faculty is updated successfully",
+    data: result,
+  });
+});
+
 // getAllBooking
 const getAllBooking = catchAsync(async (req, res) => {
   const result = await facultyBookingServices.getAllBooking();
@@ -77,7 +93,6 @@ const getUserBooking = catchAsync(async (req, res) => {
     });
   }
   const token = tokenBearer.split("Bearer ")[1];
-  
 
   if (!token) {
     return sendResponse(res, {
@@ -127,6 +142,7 @@ const cancelBookingFromDB = catchAsync(async (req, res) => {
 
 export const facultyBookingControllers = {
   postBookingFacultyFromDb,
+  updateABookingIntoDB,
   getAllBooking,
   getUserBooking,
   cancelBookingFromDB,

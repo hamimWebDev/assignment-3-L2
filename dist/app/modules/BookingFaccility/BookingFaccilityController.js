@@ -59,6 +59,16 @@ const postBookingFacultyFromDb = (0, CatchAsync_1.catchAsync)((req, res) => __aw
         data: result,
     });
 }));
+const updateABookingIntoDB = (0, CatchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    const result = yield BookingFaccilityService_1.facultyBookingServices.updateABookingIntoDB(id, req.body);
+    (0, SendResponse_1.sendResponse)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: "Faculty is updated successfully",
+        data: result,
+    });
+}));
 // getAllBooking
 const getAllBooking = (0, CatchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield BookingFaccilityService_1.facultyBookingServices.getAllBooking();
@@ -120,6 +130,7 @@ const cancelBookingFromDB = (0, CatchAsync_1.catchAsync)((req, res) => __awaiter
 }));
 exports.facultyBookingControllers = {
     postBookingFacultyFromDb,
+    updateABookingIntoDB,
     getAllBooking,
     getUserBooking,
     cancelBookingFromDB,

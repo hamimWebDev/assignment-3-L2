@@ -1,4 +1,4 @@
-import { Types } from "mongoose";
+import { Types, UpdateQuery } from "mongoose";
 import { TFacilityBooking } from "./BookingFaccilityInterface";
 import { FacultyBooking } from "./BookingFaccilityModel";
 import { AppError } from "../errors/AppErrors";
@@ -14,8 +14,23 @@ const postBookingFacultyFromDb = async (
   return result;
 };
 
+const updateABookingIntoDB = async (
+  id: string,
+  payload: UpdateQuery<TFacilityBooking> | undefined,
+) => {
+  const result = await FacultyBooking.findOneAndUpdate(
+    { _id: id, isBooked: "confirmed" },
+    payload,
+    {
+      new: true,
+      runValidators: true,
+    },
+  );
+  return result;
+};
+
 const getAllBooking = async () => {
-  const result = await FacultyBooking.find({isBooked: "confirmed"})
+  const result = await FacultyBooking.find({ isBooked: "confirmed" })
     .populate("facility")
     .populate("user");
   return result;
@@ -47,6 +62,7 @@ const cancelBookingFromDB = async (id: string) => {
 
 export const facultyBookingServices = {
   postBookingFacultyFromDb,
+  updateABookingIntoDB,
   getAllBooking,
   getUserBooking,
   cancelBookingFromDB,

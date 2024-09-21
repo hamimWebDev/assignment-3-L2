@@ -22,6 +22,13 @@ const postBookingFacultyFromDb = (bookingData, userId) => __awaiter(void 0, void
     const result = yield BookingFaccilityModel_1.FacultyBooking.create(bookingData);
     return result;
 });
+const updateABookingIntoDB = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield BookingFaccilityModel_1.FacultyBooking.findOneAndUpdate({ _id: id, isBooked: "confirmed" }, payload, {
+        new: true,
+        runValidators: true,
+    });
+    return result;
+});
 const getAllBooking = () => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield BookingFaccilityModel_1.FacultyBooking.find({ isBooked: "confirmed" })
         .populate("facility")
@@ -46,6 +53,7 @@ const cancelBookingFromDB = (id) => __awaiter(void 0, void 0, void 0, function* 
 });
 exports.facultyBookingServices = {
     postBookingFacultyFromDb,
+    updateABookingIntoDB,
     getAllBooking,
     getUserBooking,
     cancelBookingFromDB,
