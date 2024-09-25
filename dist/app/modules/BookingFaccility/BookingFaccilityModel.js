@@ -22,6 +22,15 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FacultyBooking = void 0;
 const mongoose_1 = __importStar(require("mongoose"));
@@ -38,12 +47,25 @@ const bookingFacilitySchema = new mongoose_1.Schema({
     payableAmount: { type: Number },
     isBooked: { type: String, default: "confirmed" },
 });
+// Pre-save hook to check for existing booking and calculate payable amount
 bookingFacilitySchema.pre("save", function (next) {
-    const pricePerHour = 30; // price per hour set to 30
-    const startTime = new Date(`1970-01-01T${this.startTime}:00Z`);
-    const endTime = new Date(`1970-01-01T${this.endTime}:00Z`);
-    const durationInHours = (endTime.getTime() - startTime.getTime()) / (1000 * 60 * 60); // convert milliseconds to hours
-    this.payableAmount = durationInHours * pricePerHour;
-    next();
+    return __awaiter(this, void 0, void 0, function* () {
+        // Check if there's an existing booking with the same facility, date, startTime, and endTime
+        const existingBooking = yield mongoose_1.default.models['Faculty-booking'].findOne({
+            facility: this.facility,
+            date: this.date,
+            startTime: this.startTime,
+            endTime: this.endTime,
+        });
+        if (existingBooking) {
+            return next(new Error("This time slot is already booked."));
+        }
+        const pricePerHour = 30; // price per hour set to 30
+        const startTime = new Date(`1970-01-01T${this.startTime}:00Z`);
+        const endTime = new Date(`1970-01-01T${this.endTime}:00Z`);
+        const durationInHours = (endTime.getTime() - startTime.getTime()) / (1000 * 60 * 60); // convert milliseconds to hours
+        this.payableAmount = durationInHours * pricePerHour;
+        next();
+    });
 });
 exports.FacultyBooking = mongoose_1.default.model("Faculty-booking", bookingFacilitySchema);
