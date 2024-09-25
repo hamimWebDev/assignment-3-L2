@@ -3,7 +3,7 @@ import { userRoutes } from "../app/modules/User/UserRoutes";
 import { LoginRoutes } from "../app/modules/Login/LoginRoute";
 import { FacultyRoutes } from "../app/modules/Facility/FacilityRoutes";
 import { facultyBookingRoutes } from "../app/modules/BookingFaccility/BookingFaccilityRoutes";
-import { checkAvailabilityRoutes } from "../app/modules/checkAvailability/CheckAvailabilityRoute";
+import { BookingCheckerRoutes } from "../app/modules/BookingCheck/bookingCheak.route";
 
 export const router = Router();
 
@@ -26,7 +26,7 @@ const moduleRoutes = [
   },
   {
     path: "/check-availability",
-    route: checkAvailabilityRoutes,
+    route: BookingCheckerRoutes,
   },
 ];
 

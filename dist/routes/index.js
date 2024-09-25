@@ -6,7 +6,7 @@ const UserRoutes_1 = require("../app/modules/User/UserRoutes");
 const LoginRoute_1 = require("../app/modules/Login/LoginRoute");
 const FacilityRoutes_1 = require("../app/modules/Facility/FacilityRoutes");
 const BookingFaccilityRoutes_1 = require("../app/modules/BookingFaccility/BookingFaccilityRoutes");
-const CheckAvailabilityRoute_1 = require("../app/modules/checkAvailability/CheckAvailabilityRoute");
+const bookingCheak_route_1 = require("../app/modules/BookingCheck/bookingCheak.route");
 exports.router = (0, express_1.Router)();
 const moduleRoutes = [
     {
@@ -27,7 +27,7 @@ const moduleRoutes = [
     },
     {
         path: "/check-availability",
-        route: CheckAvailabilityRoute_1.checkAvailabilityRoutes,
+        route: bookingCheak_route_1.BookingCheckerRoutes,
     },
 ];
 moduleRoutes.forEach((route) => exports.router.use(route.path, route.route));
