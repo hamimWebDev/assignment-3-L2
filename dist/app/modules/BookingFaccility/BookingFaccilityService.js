@@ -48,7 +48,7 @@ const getABooking = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield BookingFaccilityModel_1.FacultyBooking.findOne({
         _id: id,
         isBooked: "confirmed",
-    });
+    }).populate("facility");
     return result;
 });
 const cancelBookingFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {

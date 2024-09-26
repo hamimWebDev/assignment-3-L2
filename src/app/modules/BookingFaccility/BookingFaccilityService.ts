@@ -50,7 +50,7 @@ const getABooking = async (id: string) => {
   const result = await FacultyBooking.findOne({
     _id: id,
     isBooked: "confirmed",
-  });
+  }).populate("facility");
   return result;
 };
 
