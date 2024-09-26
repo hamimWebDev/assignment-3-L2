@@ -46,6 +46,14 @@ const getUserBooking = async (userId: Types.ObjectId) => {
   return result;
 };
 
+const getABooking = async (id: string) => {
+  const result = await FacultyBooking.findOne({
+    _id: id,
+    isBooked: "confirmed",
+  });
+  return result;
+};
+
 const cancelBookingFromDB = async (id: string) => {
   const cancelBooking = await FacultyBooking.findOneAndUpdate(
     { _id: id },
@@ -65,5 +73,6 @@ export const facultyBookingServices = {
   updateABookingIntoDB,
   getAllBooking,
   getUserBooking,
+  getABooking,
   cancelBookingFromDB,
 };

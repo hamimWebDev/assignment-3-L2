@@ -118,6 +118,16 @@ const getUserBooking = (0, CatchAsync_1.catchAsync)((req, res) => __awaiter(void
         data: result,
     });
 }));
+const getABooking = (0, CatchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    const result = yield BookingFaccilityService_1.facultyBookingServices.getABooking(id);
+    (0, SendResponse_1.sendResponse)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: "get a booking successfully",
+        data: result,
+    });
+}));
 const cancelBookingFromDB = (0, CatchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     const result = yield BookingFaccilityService_1.facultyBookingServices.cancelBookingFromDB(id);
@@ -133,5 +143,6 @@ exports.facultyBookingControllers = {
     updateABookingIntoDB,
     getAllBooking,
     getUserBooking,
+    getABooking,
     cancelBookingFromDB,
 };

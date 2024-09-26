@@ -44,6 +44,13 @@ const getUserBooking = (userId) => __awaiter(void 0, void 0, void 0, function* (
         .populate("user");
     return result;
 });
+const getABooking = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield BookingFaccilityModel_1.FacultyBooking.findOne({
+        _id: id,
+        isBooked: "confirmed",
+    });
+    return result;
+});
 const cancelBookingFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const cancelBooking = yield BookingFaccilityModel_1.FacultyBooking.findOneAndUpdate({ _id: id }, { isBooked: "canceled" }, { new: true, runValidators: true });
     if (!cancelBooking) {
@@ -56,5 +63,6 @@ exports.facultyBookingServices = {
     updateABookingIntoDB,
     getAllBooking,
     getUserBooking,
+    getABooking,
     cancelBookingFromDB,
 };

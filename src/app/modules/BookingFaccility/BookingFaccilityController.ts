@@ -127,6 +127,17 @@ const getUserBooking = catchAsync(async (req, res) => {
   });
 });
 
+const getABooking = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const result = await facultyBookingServices.getABooking(id);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "get a booking successfully",
+    data: result,
+  });
+});
+
 const cancelBookingFromDB = catchAsync(async (req, res) => {
   const { id } = req.params;
 
@@ -145,5 +156,6 @@ export const facultyBookingControllers = {
   updateABookingIntoDB,
   getAllBooking,
   getUserBooking,
+  getABooking,
   cancelBookingFromDB,
 };

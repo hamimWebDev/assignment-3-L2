@@ -17,6 +17,7 @@ router.put(
   facultyBookingControllers.updateABookingIntoDB,
 );
 router.get("/user", auth("user"), facultyBookingControllers.getUserBooking);
+router.get("/:id", facultyBookingControllers.getABooking);
 router.delete(
   "/:id",
   auth("user"),
