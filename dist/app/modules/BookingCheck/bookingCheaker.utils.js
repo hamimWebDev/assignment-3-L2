@@ -18,8 +18,8 @@ const convertMinutesToTimeString = (minutes) => {
 // Find available time ranges considering entire day
 const getAvailableTimeSlots = (bookings) => {
     const availableSlots = [];
-    const startOfDay = "00:00"; // Assuming working day starts at midnight
-    const endOfDay = "23:59"; // Assuming working day ends at 11:59 PM
+    const startOfDay = "08:00"; // Assuming working day starts at midnight
+    const endOfDay = "19:59"; // Assuming working day ends at 11:59 PM
     let currentStartMinutes = convertTimeStringToMinutes(startOfDay);
     // Sort bookings by start time
     bookings.sort((a, b) => convertTimeStringToMinutes(a.startTime) -
