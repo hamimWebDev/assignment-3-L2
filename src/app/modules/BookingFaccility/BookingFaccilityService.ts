@@ -42,7 +42,7 @@ const postBookingFacultyFromDb = async (
     // Proceed with payment
     const { payment_url } = await initialPayment(paymentData);
 
-    return {result, payment_url };
+    return { result, payment_url };
   } catch (error) {
     console.error("Error posting faculty booking:", error);
     throw error;
@@ -84,7 +84,9 @@ const getABooking = async (id: string) => {
   const result = await FacultyBooking.findOne({
     _id: id,
     isBooked: "confirmed",
-  }).populate("facility");
+  })
+    .populate("facility")
+    .populate("user");
   return result;
 };
 
