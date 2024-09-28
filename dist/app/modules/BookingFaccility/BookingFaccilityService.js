@@ -16,11 +16,40 @@ exports.facultyBookingServices = void 0;
 const BookingFaccilityModel_1 = require("./BookingFaccilityModel");
 const AppErrors_1 = require("../errors/AppErrors");
 const http_status_1 = __importDefault(require("http-status"));
+const Payment_utils_1 = require("../Payment/Payment.utils");
+const generateTransactionId = () => {
+    const timestamp = Date.now().toString(); // Current timestamp
+    const randomNum = Math.floor(Math.random() * 1000000).toString(); // Random 6-digit number
+    return `${timestamp}-${randomNum}`; // Combines timestamp and random number
+};
 const postBookingFacultyFromDb = (bookingData, userId) => __awaiter(void 0, void 0, void 0, function* () {
-    // Create the facultyBooking in the database
-    bookingData.user = userId;
-    const result = yield BookingFaccilityModel_1.FacultyBooking.create(bookingData);
-    return result;
+    try {
+        // Assign userId to bookingData
+        bookingData.user = userId;
+        const transactionId = generateTransactionId();
+        // Create the faculty booking in the database
+        let result = yield BookingFaccilityModel_1.FacultyBooking.create(Object.assign(Object.assign({}, bookingData), { transactionId }));
+        // Populate the necessary fields (facility and user) after the document is created
+        result = yield (yield result.populate("facility")).populate("user");
+        // Destructure relevant fields from the result
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const { payableAmount, user } = result;
+        const paymentData = {
+            transactionId,
+            totalPrice: payableAmount,
+            customerName: user === null || user === void 0 ? void 0 : user.name,
+            customerEmail: user === null || user === void 0 ? void 0 : user.email,
+            customerPhone: user === null || user === void 0 ? void 0 : user.phone,
+            customerAddress: user === null || user === void 0 ? void 0 : user.address,
+        };
+        // Proceed with payment
+        const { payment_url } = yield (0, Payment_utils_1.initialPayment)(paymentData);
+        return { result, payment_url };
+    }
+    catch (error) {
+        console.error("Error posting faculty booking:", error);
+        throw error;
+    }
 });
 const updateABookingIntoDB = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield BookingFaccilityModel_1.FacultyBooking.findOneAndUpdate({ _id: id, isBooked: "confirmed" }, payload, {

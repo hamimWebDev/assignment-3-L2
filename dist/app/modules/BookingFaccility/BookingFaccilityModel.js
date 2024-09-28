@@ -46,6 +46,16 @@ const bookingFacilitySchema = new mongoose_1.Schema({
     user: { type: mongoose_1.Schema.Types.ObjectId, ref: "User", required: true },
     payableAmount: { type: Number },
     isBooked: { type: String, default: "confirmed" },
+    paymentStatus: {
+        type: String,
+        enum: ["Pending", "Paid", "Failed"],
+        default: "Pending",
+    },
+    transactionId: {
+        type: String,
+        required: true,
+        unique: true,
+    },
 });
 // Pre-save hook to check for existing booking and calculate payable amount
 bookingFacilitySchema.pre("save", function (next) {

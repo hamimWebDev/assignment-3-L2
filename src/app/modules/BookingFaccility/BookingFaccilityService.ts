@@ -3,17 +3,51 @@ import { TFacilityBooking } from "./BookingFaccilityInterface";
 import { FacultyBooking } from "./BookingFaccilityModel";
 import { AppError } from "../errors/AppErrors";
 import httpStatus from "http-status";
+import { initialPayment } from "../Payment/Payment.utils";
+
+const generateTransactionId = (): string => {
+  const timestamp = Date.now().toString(); // Current timestamp
+  const randomNum = Math.floor(Math.random() * 1000000).toString(); // Random 6-digit number
+  return `${timestamp}-${randomNum}`; // Combines timestamp and random number
+};
 
 const postBookingFacultyFromDb = async (
   bookingData: TFacilityBooking,
   userId: Types.ObjectId,
 ) => {
-  // Create the facultyBooking in the database
-  bookingData.user = userId;
-  const result = await FacultyBooking.create(bookingData);
-  return result;
-};
+  try {
+    // Assign userId to bookingData
+    bookingData.user = userId;
+    const transactionId = generateTransactionId();
 
+    // Create the faculty booking in the database
+    let result = await FacultyBooking.create({ ...bookingData, transactionId });
+
+    // Populate the necessary fields (facility and user) after the document is created
+    result = await (await result.populate("facility")).populate("user");
+
+    // Destructure relevant fields from the result
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { payableAmount, user } = result as any;
+
+    const paymentData = {
+      transactionId,
+      totalPrice: payableAmount,
+      customerName: user?.name,
+      customerEmail: user?.email,
+      customerPhone: user?.phone,
+      customerAddress: user?.address,
+    };
+
+    // Proceed with payment
+    const { payment_url } = await initialPayment(paymentData);
+
+    return {result, payment_url };
+  } catch (error) {
+    console.error("Error posting faculty booking:", error);
+    throw error;
+  }
+};
 const updateABookingIntoDB = async (
   id: string,
   payload: UpdateQuery<TFacilityBooking> | undefined,

@@ -10,4 +10,6 @@ export interface TFacilityBooking {
   user: Types.ObjectId;
   payableAmount?: number;
   isBooked?: TBookedRole;
+  paymentStatus: string;
+  transactionId: string;
 }
