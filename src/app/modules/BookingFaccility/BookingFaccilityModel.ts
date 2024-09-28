@@ -15,16 +15,15 @@ const bookingFacilitySchema = new Schema<TFacilityBooking>({
   isBooked: { type: String, default: "confirmed" },
 });
 
-
-
 // Pre-save hook to check for existing booking and calculate payable amount
 bookingFacilitySchema.pre<TFacilityBooking>("save", async function (next) {
   // Check if there's an existing booking with the same facility, date, startTime, and endTime
-  const existingBooking = await mongoose.models['Faculty-booking'].findOne({
+  const existingBooking = await mongoose.models["Faculty-booking"].findOne({
     facility: this.facility,
     date: this.date,
     startTime: this.startTime,
     endTime: this.endTime,
+    isBooked: "confirmed",
   });
 
   if (existingBooking) {
@@ -46,5 +45,5 @@ bookingFacilitySchema.pre<TFacilityBooking>("save", async function (next) {
 
 export const FacultyBooking = mongoose.model<TFacilityBooking>(
   "Faculty-booking",
-  bookingFacilitySchema
+  bookingFacilitySchema,
 );

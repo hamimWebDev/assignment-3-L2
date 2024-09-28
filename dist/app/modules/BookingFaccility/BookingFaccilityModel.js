@@ -51,11 +51,12 @@ const bookingFacilitySchema = new mongoose_1.Schema({
 bookingFacilitySchema.pre("save", function (next) {
     return __awaiter(this, void 0, void 0, function* () {
         // Check if there's an existing booking with the same facility, date, startTime, and endTime
-        const existingBooking = yield mongoose_1.default.models['Faculty-booking'].findOne({
+        const existingBooking = yield mongoose_1.default.models["Faculty-booking"].findOne({
             facility: this.facility,
             date: this.date,
             startTime: this.startTime,
             endTime: this.endTime,
+            isBooked: "confirmed",
         });
         if (existingBooking) {
             return next(new Error("This time slot is already booked."));
