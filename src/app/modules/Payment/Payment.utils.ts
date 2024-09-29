@@ -20,7 +20,7 @@ export const initialPayment = async (paymentData: any) => {
     tran_id: paymentData.transactionId,
     success_url: `https://assignment-3-l2-ten.vercel.app/api/payment/confirmation?transactionId=${paymentData.transactionId}&status=Success`,
     fail_url: `https://assignment-3-l2-ten.vercel.app/api/payment/confirmation?status=Failed`,
-    cancel_url: "http://localhost:5173/",
+    cancel_url: "https://66f9368febc91a00f85c2e44--venerable-daifuku-04f83a.netlify.app/",
     amount: Math.round(amountInBDT),
     currency: "BDT",
     desc: "Merchant Registration Payment",

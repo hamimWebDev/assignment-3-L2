@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: ["http://localhost:5173", "http://localhost:5174"],
+    origin: ["http://localhost:5173", "https://66f9368febc91a00f85c2e44--venerable-daifuku-04f83a.netlify.app"],
     credentials: true,
   }),
 );
