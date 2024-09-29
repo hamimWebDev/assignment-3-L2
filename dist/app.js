@@ -15,7 +15,10 @@ exports.app = (0, express_1.default)();
 exports.app.use(express_1.default.json());
 exports.app.use((0, cookie_parser_1.default)());
 exports.app.use((0, cors_1.default)({
-    origin: ["http://localhost:5173", "https://66f9368febc91a00f85c2e44--venerable-daifuku-04f83a.netlify.app"],
+    origin: [
+        "http://localhost:5173",
+        "https://venerable-daifuku-04f83a.netlify.app",
+    ],
     credentials: true,
 }));
 // application routes
