@@ -23,7 +23,7 @@ const bookingCheakerFromDb = (query) => __awaiter(void 0, void 0, void 0, functi
     if (!facilityCheck) {
         throw new Error("Facility faild to find");
     }
-    const result = yield BookingFaccilityModel_1.FacultyBooking.find({ date: requestedDate, isBooked: { $ne: "canceled" } }, { endTime: 1, startTime: 1, _id: 0 });
+    const result = yield BookingFaccilityModel_1.FacultyBooking.find({ date: requestedDate, isBooked: { $ne: "canceled" }, facility: id }, { endTime: 1, startTime: 1, _id: 0 });
     const availableSlots = (0, bookingCheaker_utils_1.getAvailableTimeSlots)(result);
     if (!availableSlots[0]) {
         throw new Error("On this date no availble time to provide so please booking others date");

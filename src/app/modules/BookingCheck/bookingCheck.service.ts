@@ -17,7 +17,7 @@ const bookingCheakerFromDb = async (query: Record<string, unknown>) => {
   }
 
   const result = await FacultyBooking.find(
-    { date: requestedDate, isBooked: { $ne: "canceled" } },
+    { date: requestedDate, isBooked: { $ne: "canceled" }, facility: id },
     { endTime: 1, startTime: 1, _id: 0 },
   );
 
