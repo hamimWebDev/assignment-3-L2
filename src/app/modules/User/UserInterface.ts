@@ -9,6 +9,8 @@ interface TUser {
   address: string;
   isDeleted?: boolean;
   profileImage?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export default TUser;

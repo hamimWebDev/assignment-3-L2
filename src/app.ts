@@ -14,8 +14,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://venerable-daifuku-04f83a.netlify.app",
-      "https://assignment-5-l2.netlify.app",
+      "https://assignment-5-l2-coral.vercel.app",
     ],
     credentials: true,
   }),
